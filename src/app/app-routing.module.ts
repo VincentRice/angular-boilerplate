@@ -16,7 +16,7 @@ const routes: Routes = [
     { path: 'admin', loadChildren: adminModule, canActivate: [AuthGuard], data: { roles: [Role.Admin] } },
 
     // otherwise redirect to home
-    { path: '**', redictTo: '' }
+    { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
