@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core'
-import { Router, ActivatedRoute, Route } from '@angular/router';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AccountService, AlertService } from '@app/_services';
@@ -17,12 +17,12 @@ export class ResetPasswordComponent implements OnInit {
     TokenStatus = TokenStatus;
     tokenStatus = TokenStatus.Validating;
     token = null;
-    form: UntypedFormGroup;
+    form: FormGroup;
     loading = false;
     submitted = false;
 
     constructor(
-        private formBuilder: UntypedFormBuilder,
+        private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
         private accountService: AccountService,
@@ -32,7 +32,7 @@ export class ResetPasswordComponent implements OnInit {
     ngOnInit() {
         this.form = this.formBuilder.group({
             password: ['', [Validators.required, Validators.minLength(6)]],
-            confirmPassword: ['', Validators.required ],
+            confirmPassword: ['', Validators.required],
         }, {
             validator: MustMatch('password', 'confirmPassword')
         });
@@ -61,10 +61,10 @@ export class ResetPasswordComponent implements OnInit {
     onSubmit() {
         this.submitted = true;
 
-        // reset alert on submit
+        // reset alerts on submit
         this.alertService.clear();
 
-        // stop here if form invalid
+        // stop here if form is invalid
         if (this.form.invalid) {
             return;
         }
@@ -74,7 +74,7 @@ export class ResetPasswordComponent implements OnInit {
             .pipe(first())
             .subscribe({
                 next: () => {
-                    this.alertService.success('Password reset succesful, you can now login', { keepAfterRouteChange: true });
+                    this.alertService.success('Password reset successful, you can now login', { keepAfterRouteChange: true });
                     this.router.navigate(['../login'], { relativeTo: this.route });
                 },
                 error: error => {

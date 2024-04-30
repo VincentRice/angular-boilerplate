@@ -25,14 +25,9 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.less"
             ],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "server.ts"
-            }
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -89,7 +84,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.less"
             ],
             "scripts": []
           }
@@ -98,6 +93,6 @@
     }
   },
   "cli": {
-    "analytics": "34ea295e-a106-47e5-b1fc-24e7209136c1"
+    "analytics": "f67cafd0-16b0-48cf-bb68-ece91721fdf7"
   }
 }

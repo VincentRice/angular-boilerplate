@@ -11,8 +11,8 @@ enum EmailStatus {
 
 @Component({ templateUrl: 'verify-email.component.html' })
 export class VerifyEmailComponent implements OnInit {
-    EmailStatus: EmailStatus;
-    emailStatus: EmailStatus.Verifying;
+    EmailStatus = EmailStatus;
+    emailStatus = EmailStatus.Verifying;
 
     constructor(
         private route: ActivatedRoute,
@@ -31,7 +31,7 @@ export class VerifyEmailComponent implements OnInit {
             .pipe(first())
             .subscribe({
                 next: () => {
-                    this.alertService.success('Verification successful, you can now log in now', { keepAfterRouteChange: true });
+                    this.alertService.success('Verification successful, you can now login', { keepAfterRouteChange: true });
                     this.router.navigate(['../login'], { relativeTo: this.route });
                 },
                 error: () => {

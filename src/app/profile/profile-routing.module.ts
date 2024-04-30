@@ -5,7 +5,7 @@ import { LayoutComponent } from './layout.component';
 import { DetailsComponent } from './details.component';
 import { UpdateComponent } from './update.component';
 
-const routes: Routes = [ 
+const routes: Routes = [
     {
         path: '', component: LayoutComponent,
         children: [

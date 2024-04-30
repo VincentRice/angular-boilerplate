@@ -7,7 +7,7 @@ import { LayoutComponent } from './layout.component';
 import { DetailsComponent } from './details.component';
 import { UpdateComponent } from './update.component';
 
-@NgModule({ 
+@NgModule({
     imports: [
         CommonModule,
         ReactiveFormsModule,

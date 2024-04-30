@@ -1,17 +1,17 @@
-import{ Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+﻿import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first, finalize } from 'rxjs/operators';
 
 import { AccountService, AlertService } from '@app/_services';
 
 @Component({ templateUrl: 'forgot-password.component.html' })
 export class ForgotPasswordComponent implements OnInit {
-    form: UntypedFormGroup;
+    form: FormGroup;
     loading = false;
     submitted = false;
 
     constructor(
-        private formBuilder: UntypedFormBuilder,
+        private formBuilder: FormBuilder,
         private accountService: AccountService,
         private alertService: AlertService
     ) { }
@@ -38,10 +38,10 @@ export class ForgotPasswordComponent implements OnInit {
 
         this.loading = true;
         this.alertService.clear();
-        this.accountService.ForgotPassword(this.f.email.value)
+        this.accountService.forgotPassword(this.f.email.value)
             .pipe(first())
             .pipe(finalize(() => this.loading = false))
-            .subcribe({
+            .subscribe({
                 next: () => this.alertService.success('Please check your email for password reset instructions'),
                 error: error => this.alertService.error(error)
             });

@@ -7,7 +7,7 @@ import { map, finalize } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { Account } from '@app/_models';
 
-const baseUrl = `${environment.apiAUrl}/accounts`;
+const baseUrl = `${environment.apiUrl}/accounts`;
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -27,7 +27,7 @@ export class AccountService {
     }
 
     login(email: string, password: string) {
-        return this.http.post<any>(`${baseUrl}/authenticate`, { email, password}, { withCredentials: true })
+        return this.http.post<any>(`${baseUrl}/authenticate`, { email, password }, { withCredentials: true })
             .pipe(map(account => {
                 this.accountSubject.next(account);
                 this.startRefreshTokenTimer();
@@ -36,7 +36,7 @@ export class AccountService {
     }
 
     logout() {
-        this.http.post<any>(`${baseUrl}/refresh-token`, {}, { withCredentials: true })
+        this.http.post<any>(`${baseUrl}/revoke-token`, {}, { withCredentials: true }).subscribe();
         this.stopRefreshTokenTimer();
         this.accountSubject.next(null);
         this.router.navigate(['/account/login']);
@@ -58,15 +58,15 @@ export class AccountService {
     verifyEmail(token: string) {
         return this.http.post(`${baseUrl}/verify-email`, { token });
     }
-
-    forgotPassword(token: string) {
+    
+    forgotPassword(email: string) {
         return this.http.post(`${baseUrl}/forgot-password`, { email });
     }
-
+    
     validateResetToken(token: string) {
         return this.http.post(`${baseUrl}/validate-reset-token`, { token });
     }
-
+    
     resetPassword(token: string, password: string, confirmPassword: string) {
         return this.http.post(`${baseUrl}/reset-password`, { token, password, confirmPassword });
     }
@@ -75,14 +75,14 @@ export class AccountService {
         return this.http.get<Account[]>(baseUrl);
     }
 
-    getByID(id: string) {
+    getById(id: string) {
         return this.http.get<Account>(`${baseUrl}/${id}`);
     }
-
+    
     create(params) {
         return this.http.post(baseUrl, params);
     }
-
+    
     update(id, params) {
         return this.http.put(`${baseUrl}/${id}`, params)
             .pipe(map((account: any) => {
@@ -95,7 +95,7 @@ export class AccountService {
                 return account;
             }));
     }
-
+    
     delete(id: string) {
         return this.http.delete(`${baseUrl}/${id}`)
             .pipe(finalize(() => {
@@ -105,7 +105,7 @@ export class AccountService {
             }));
     }
 
-    // helpers methods
+    // helper methods
 
     private refreshTokenTimeout;
 
@@ -115,12 +115,11 @@ export class AccountService {
 
         // set a timeout to refresh the token a minute before it expires
         const expires = new Date(jwtToken.exp * 1000);
-        const timeout = expires.getTime() - Date.now() - ( 60-1000);
+        const timeout = expires.getTime() - Date.now() - (60 * 1000);
         this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
     }
 
     private stopRefreshTokenTimer() {
         clearTimeout(this.refreshTokenTimeout);
     }
-
 }

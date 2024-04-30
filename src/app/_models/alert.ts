@@ -1,6 +1,6 @@
 export class Alert {
     id: string;
-    type: string;
+    type: AlertType;
     message: string;
     autoClose: boolean;
     keepAfterRouteChange: boolean;

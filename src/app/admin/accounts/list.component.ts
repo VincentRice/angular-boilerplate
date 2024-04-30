@@ -22,7 +22,7 @@ export class ListComponent implements OnInit {
         this.accountService.delete(id)
             .pipe(first())
             .subscribe(() => {
-                this.accounts = this.accounts.filter(x => x.id !== id);
+                this.accounts = this.accounts.filter(x => x.id !== id) 
             });
     }
 }
